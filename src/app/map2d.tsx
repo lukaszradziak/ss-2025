@@ -1,7 +1,7 @@
+import OlMap from '../components/ol-map.tsx'
+
 function Map2d() {
-  return (
-    <div>2d</div>
-  );
+  return <OlMap />
 }
 
 export default Map2d
