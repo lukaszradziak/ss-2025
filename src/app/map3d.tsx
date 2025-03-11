@@ -1,7 +1,7 @@
+import PotreeMap from '../components/potree-map.tsx'
+
 function Map3d() {
-  return (
-    <div>3d</div>
-  );
+  return <PotreeMap />
 }
 
 export default Map3d
