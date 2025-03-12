@@ -22,10 +22,10 @@ export interface Metadata {
 }
 
 export class MapBuilder {
-    public static RASTER_499_METADATA = '/data/6/rasters/499/499/metadata.json'
-    public static RASTER_499_TILE = '/data/6/rasters/499/499/{z}/{x}/{y}.lerc'
-    public static RASTER_500_METADATA = '/data/6/rasters/500/500/metadata.json'
-    public static RASTER_500_TILE = '/data/6/rasters/500/500/{z}/{x}/{y}.webp'
+    public static RASTER_499_METADATA = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/499/499/metadata.json'
+    public static RASTER_499_TILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/499/499/{z}/{x}/{y}.lerc'
+    public static RASTER_500_METADATA = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/500/500/metadata.json'
+    public static RASTER_500_TILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/500/500/{z}/{x}/{y}.webp'
     private projection?: Projection
     private lercLoaded: boolean = false
 
@@ -42,7 +42,7 @@ export class MapBuilder {
         }
 
         await lerc.load({
-            locateFile: () => '/lerc-wasm.wasm'
+            locateFile: () => './lerc-wasm.wasm'
         })
         this.lercLoaded = true
     }

@@ -1,6 +1,6 @@
 import {useEffect, useRef} from 'react'
 
-const JSON_FILE = '/data/6/pointclouds/2473/ept/ept.json'
+const JSON_FILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/pointclouds/2473/ept/ept.json'
 
 function PotreeMap() {
     const mapDivRef = useRef<HTMLDivElement>(null)

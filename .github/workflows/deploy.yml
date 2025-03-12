@@ -30,13 +30,13 @@ jobs:
       run: npm install -g pnpm
     - run: pnpm install
     - run: pnpm run lint
-    - run: BASE_URL=/ss-2025/ pnpm run build
+    - run: BASE_URL=/ss-2025/ VITE_URL_DATA=https://luk7.smallhost.pl/ss/ pnpm run build
     - name: Upload artifact for deployment
       uses: actions/upload-pages-artifact@v3
       with:
         path: ./dist
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist

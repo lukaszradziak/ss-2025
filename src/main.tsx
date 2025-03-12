@@ -2,14 +2,14 @@ import './style/layout.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './app'
-import { BrowserRouter, Route, Routes } from "react-router"
+import {HashRouter, Route, Routes} from 'react-router'
 import Layout from './layout.tsx'
 import Map2d from './app/map2d.tsx'
 import Map3d from './app/map3d.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<App />} />
@@ -17,6 +17,6 @@ createRoot(document.getElementById('root')!).render(
           <Route path="3d" element={<Map3d />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )
