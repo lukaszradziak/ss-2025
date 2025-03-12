@@ -9,8 +9,12 @@ import TileGrid from 'ol/tilegrid/TileGrid'
 import XYZ from 'ol/source/XYZ'
 import TileLayer from 'ol/layer/Tile'
 import * as lerc from 'lerc'
-import {ImageTile} from 'ol'
+import ImageTile from 'ol/source/ImageTile'
+import * as ol from 'ol'
 import {lercToCanvas} from '../utils/canvas.tsx'
+import { GeoJSON } from 'ol/format'
+import VectorSource from 'ol/source/Vector'
+import VectorLayer from 'ol/layer/Vector'
 
 export interface Metadata {
     maxX: number;
@@ -26,6 +30,7 @@ export class MapBuilder {
     public static RASTER_499_TILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/499/499/{z}/{x}/{y}.lerc'
     public static RASTER_500_METADATA = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/500/500/metadata.json'
     public static RASTER_500_TILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/500/500/{z}/{x}/{y}.webp'
+    public static VECTOR_METADATA = (import.meta.env.VITE_URL_DATA || '') + './data/6/vectors/2472/2472.geojson'
     private projection?: Projection
     private lercLoaded: boolean = false
 
@@ -60,14 +65,18 @@ export class MapBuilder {
             (metadata500.minY + metadata500.maxY) / 2
         ]
 
+        const layerStreetMap = this.getStreetMapLayer()
         const layer500 = this.getLayer500(metadata500)
         const layer499 = this.getLayer499(metadata499)
+        const layerVector = this.getVectorLayer()
 
         return new Map({
             target: domElement,
             layers: [
+                layerStreetMap,
                 layer500,
                 layer499,
+                layerVector,
             ],
             view: new View({
                 projection: this.projection,
@@ -103,8 +112,7 @@ export class MapBuilder {
         })
 
         return new TileLayer({
-            source: tileSource,
-            opacity: 0.4
+            source: tileSource
         })
     }
 
@@ -129,7 +137,7 @@ export class MapBuilder {
             tileGrid: tileGrid,
             wrapX: false,
             tileLoadFunction: async (imageTile, src) => {
-                if (!(imageTile instanceof ImageTile)) {
+                if (!(imageTile instanceof ol.ImageTile)) {
                     throw new Error('imageTile must be of type ImageTile');
                 }
 
@@ -148,6 +156,30 @@ export class MapBuilder {
         return new TileLayer({
             source: tileSource,
             opacity: 0.6
+        })
+    }
+
+    private getVectorLayer() {
+        return new VectorLayer({
+            source: new VectorSource({
+                format: new GeoJSON(),
+                url: MapBuilder.VECTOR_METADATA,
+            })
+        })
+    }
+
+    private getStreetMapLayer() {
+        const attributions = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+            '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+        const source = new ImageTile({
+            attributions: attributions,
+            url: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=' + import.meta.env.VITE_OPEN_STREET_MAP_KEY,
+            tileSize: 512,
+            maxZoom: 20,
+        })
+
+        return new TileLayer({
+            source: source,
         })
     }
 }

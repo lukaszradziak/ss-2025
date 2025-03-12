@@ -34,8 +34,10 @@ function OlMap() {
                 );
 
                 setLayers([
-                    { id: 1, name: 'RGB Raster', opacity: 1, visible: true },
-                    { id: 2, name: 'Elevation Raster', opacity: 0.5, visible: true },
+                    { id: 1, name: 'StreetMap', opacity: 1, visible: true },
+                    { id: 2, name: 'RGB Raster', opacity: 1, visible: true },
+                    { id: 3, name: 'Elevation Raster', opacity: 0.5, visible: true },
+                    { id: 4, name: 'Vector', opacity: 0.4, visible: true },
                 ])
             }
         };

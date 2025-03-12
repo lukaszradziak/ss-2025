@@ -30,7 +30,7 @@ jobs:
       run: npm install -g pnpm
     - run: pnpm install
     - run: pnpm run lint
-    - run: BASE_URL=/ss-2025/ VITE_URL_DATA=https://luk7.smallhost.pl/ss/ pnpm run build
+    - run: BASE_URL=/ss-2025/ VITE_URL_DATA=https://luk7.smallhost.pl/ss/ VITE_OPEN_STREET_MAP_KEY=53F5FdAUz377JfYEeqFC pnpm run build
     - name: Upload artifact for deployment
       uses: actions/upload-pages-artifact@v3
       with:
