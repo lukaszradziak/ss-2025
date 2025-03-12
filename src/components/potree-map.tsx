@@ -1,6 +1,5 @@
 import {useEffect, useRef} from 'react'
-
-const JSON_FILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/pointclouds/2473/ept/ept.json'
+import {config} from '../config/config'
 
 function PotreeMap() {
     const mapDivRef = useRef<HTMLDivElement>(null)
@@ -12,7 +11,7 @@ function PotreeMap() {
         viewer.setPointBudget(1*1000*1000)
         viewer.loadSettingsFromURL()
 
-        Potree.loadPointCloud(JSON_FILE, 'points', (e) => {
+        Potree.loadPointCloud(config.POTREE.JSON_FILE, 'points', (e) => {
             const scene = viewer.scene
             const pointcloud = e.pointcloud
             const material = pointcloud.material

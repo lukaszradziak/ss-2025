@@ -1,4 +1,4 @@
-import OlMap from '../components/ol-map.tsx'
+import OlMap from '../components/ol-map'
 
 function Map2d() {
   return <OlMap />

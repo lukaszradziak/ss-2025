@@ -2,8 +2,9 @@ import {useEffect, useRef, useState} from 'react'
 import 'ol/ol.css'
 import Map from 'ol/Map'
 import useSWR from 'swr'
-import {fetcher} from '../utils/swr.ts'
-import {Metadata, MapBuilder} from '../services/map-builder.ts'
+import {fetcher} from '../utils/swr'
+import {Metadata, MapBuilder} from '../services/map-builder'
+import {config} from '../config/config'
 
 interface Layer {
     id: number;
@@ -13,8 +14,8 @@ interface Layer {
 }
 
 function OlMap() {
-    const metadata499 = useSWR<Metadata>(MapBuilder.RASTER_499_METADATA, fetcher)
-    const metadata500 = useSWR<Metadata>(MapBuilder.RASTER_500_METADATA, fetcher)
+    const metadata499 = useSWR<Metadata>(config.OPEN_LAYERS.RASTER_499_METADATA, fetcher)
+    const metadata500 = useSWR<Metadata>(config.OPEN_LAYERS.RASTER_500_METADATA, fetcher)
     const mapRef = useRef<Map>()
     const mapDivRef = useRef<HTMLDivElement>(null)
     const [layers, setLayers] = useState<Layer[]>([])

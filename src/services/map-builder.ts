@@ -15,6 +15,7 @@ import {lercToCanvas} from '../utils/canvas'
 import { GeoJSON } from 'ol/format'
 import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
+import {config} from '../config/config'
 
 export interface Metadata {
     maxX: number;
@@ -26,11 +27,6 @@ export interface Metadata {
 }
 
 export class MapBuilder {
-    public static RASTER_499_METADATA = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/499/499/metadata.json'
-    public static RASTER_499_TILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/499/499/{z}/{x}/{y}.lerc'
-    public static RASTER_500_METADATA = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/500/500/metadata.json'
-    public static RASTER_500_TILE = (import.meta.env.VITE_URL_DATA || '') + 'data/6/rasters/500/500/{z}/{x}/{y}.webp'
-    public static VECTOR_METADATA = (import.meta.env.VITE_URL_DATA || '') + './data/6/vectors/2472/2472.geojson'
     private projection?: Projection
     private lercLoaded: boolean = false
 
@@ -47,7 +43,7 @@ export class MapBuilder {
         }
 
         await lerc.load({
-            locateFile: () => './lerc-wasm.wasm'
+            locateFile: () => config.LERC.PATH
         })
         this.lercLoaded = true
     }
@@ -105,7 +101,7 @@ export class MapBuilder {
         })
 
         const tileSource = new XYZ({
-            url: MapBuilder.RASTER_500_TILE,
+            url: config.OPEN_LAYERS.RASTER_500_TILE,
             projection: this.projection,
             tileGrid: tileGrid,
             wrapX: false
@@ -132,7 +128,7 @@ export class MapBuilder {
         })
 
         const tileSource = new XYZ({
-            url: MapBuilder.RASTER_499_TILE,
+            url: config.OPEN_LAYERS.RASTER_499_TILE,
             projection: this.projection,
             tileGrid: tileGrid,
             wrapX: false,
@@ -163,7 +159,7 @@ export class MapBuilder {
         return new VectorLayer({
             source: new VectorSource({
                 format: new GeoJSON(),
-                url: MapBuilder.VECTOR_METADATA,
+                url: config.OPEN_LAYERS.VECTOR_METADATA,
             })
         })
     }

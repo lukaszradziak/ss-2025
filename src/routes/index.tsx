@@ -1,4 +1,4 @@
-function App() {
+function Index() {
   return (
     <>
       <div style={{
@@ -10,7 +10,7 @@ function App() {
       }}>
         <img src="logo-skysnap-sq.webp" />
       </div>
-      <h1 style={{ 
+      <h1 style={{
         textAlign: "center",
         fontFamily: "sans-serif, Arial",
       }}>SkySnap - Rekrutacja 2025</h1>
@@ -18,4 +18,4 @@ function App() {
   )
 }
 
-export default App
+export default Index
