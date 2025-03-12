@@ -7,7 +7,6 @@ function PotreeMap() {
 
     useEffect(() => {
         const viewer = new Potree.Viewer(mapDivRef.current)
-
         viewer.setEDLEnabled(true)
         viewer.setFOV(60)
         viewer.setPointBudget(1*1000*1000)
@@ -30,7 +29,7 @@ function PotreeMap() {
     }, [])
 
     return (
-        <div ref={mapDivRef} style={{ height: '400px'}}></div>
+        <div ref={mapDivRef} style={{ height: '500px', position: 'relative' }}></div>
     )
 }
 

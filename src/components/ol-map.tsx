@@ -1,42 +1,54 @@
 import {useEffect, useRef} from 'react'
 import 'ol/ol.css'
 import Map from 'ol/Map'
-import View from 'ol/View'
-import TileLayer from 'ol/layer/Tile'
-import ImageTile from 'ol/source/ImageTile'
-
-const MAP_TILE = '/data/6/rasters/500/500/{z}/{x}/{y}.webp'
+import useSWR from 'swr'
+import {fetcher} from '../utils/swr.ts'
+import {Metadata, MapBuilder} from '../services/map-builder.ts'
 
 function OlMap() {
+    const metadata499 = useSWR<Metadata>(MapBuilder.RASTER_499_METADATA, fetcher)
+    const metadata500 = useSWR<Metadata>(MapBuilder.RASTER_500_METADATA, fetcher)
     const mapRef = useRef<Map>()
     const mapDivRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (mapRef.current === undefined) {
-            mapRef.current = new Map({
-                target: mapDivRef.current as HTMLElement,
-                layers: [
-                    new TileLayer({
-                        source: new ImageTile({
-                            url: MAP_TILE,
-                        }),
-                    }),
-                ],
-                view: new View({
-                    center: [0, 0],
-                    zoom: 0,
-                }),
-            });
+        let isMounted = true;
+
+        const load = async () => {
+            const mapBuilder = new MapBuilder();
+            await mapBuilder.setup();
+
+            if (isMounted) {
+                mapRef.current = mapBuilder.getMap(
+                    mapDivRef.current as HTMLDivElement,
+                    metadata499.data as Metadata,
+                    metadata500.data as Metadata,
+                );
+            }
+        };
+
+        if (!mapRef.current && metadata499.data && metadata500.data) {
+            load();
         }
 
         return () => {
-            mapRef.current?.setTarget(undefined)
-            mapRef.current = undefined
-        }
-    }, []);
+            isMounted = false;
+
+            if (mapRef.current) {
+                mapRef.current.setTarget(undefined);
+            }
+
+            mapRef.current = undefined;
+        };
+    }, [metadata499, metadata500]);
 
     return (
-        <div ref={mapDivRef} style={{height: '300px', width: '100%'}}></div>
+        <>
+            {metadata499.isLoading || metadata500.isLoading ? <div>Loading...</div> : null}
+            {metadata499.error ? <div>Error: {metadata499.error}</div> : null}
+            {metadata500.error ? <div>Error: {metadata500.error}</div> : null}
+            <div ref={mapDivRef} style={{height: '500px', width: '100%'}}></div>
+        </>
     );
 }
 
