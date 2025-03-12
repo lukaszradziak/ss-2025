@@ -100,6 +100,7 @@ function OlMap() {
                     <div key={layer.id} style={{ display: 'flex', gap: '5px', padding: '5px' }}>
                         <div style={{ width: '160px' }}>{layer.name}</div>
                         <input
+                            data-testid={`visible_${layer.id}`}
                             type="checkbox"
                             defaultChecked={layer.visible}
                             onChange={(e) => updateLayerVisibility(
