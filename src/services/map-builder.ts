@@ -65,7 +65,10 @@ export class MapBuilder {
 
         return new Map({
             target: domElement,
-            layers: [layer499, layer500],
+            layers: [
+                layer500,
+                layer499,
+            ],
             view: new View({
                 projection: this.projection,
                 center: center,
